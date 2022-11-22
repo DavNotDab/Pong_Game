@@ -21,19 +21,6 @@ body {
     height: 500px;
 }
 
-.game_mid_line {
-    width: 6px;
-    height: 100%;
-    background-color: black;
-    margin: 0 auto;
-}
-
-#ball {
-    border-radius: 50%;
-    background-color: var(--ball-color);
-    margin: 0;
-}
-
 .score {
     display: flex;
     flex-direction: row;
