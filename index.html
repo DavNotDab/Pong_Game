@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pong</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="score">
+            <span id="player1_score">0</span>
+            <span id="player2_score">0</span>
+        </div>
+
+        <div class="game">
+            <svg width="1000px" height="500px" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+                <line id="mid_line" stroke-dasharray="20, 15" x1="500" y1="12.5" x2="500" y2="495" style="stroke-width: 10px" stroke="white"/>
+
+                <rect id="player1" x="10" y="200" width="10" height="100" fill="white"/>
+                <rect id="player2" x="980" y="200" width="10" height="100" fill="white"/>
+
+                <circle id="ball" cx="500" cy="250" r="11" fill="white"/>
+            </svg>
+        </div>
+
+    </div>
+
+    <script src="./scripts/pong.js"></script>
+
+</body>
+</html>
