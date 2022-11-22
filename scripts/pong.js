@@ -55,8 +55,8 @@ class Player {
     move_player_up() {
         if (this.moveUp && this.y > 0) {
             this.y -= this.speed;
+            this.y2 = this.y + 50;
             this.player.setAttribute("y", this.y.toString());
-            console.log(this.y);
         }
 
     }
@@ -64,7 +64,7 @@ class Player {
     move_player_down() {
         if (this.moveDown && this.y < 400) {
             this.y += this.speed;
-            console.log(this.y);
+            this.y2 = this.y + 50;
             this.player.setAttribute("y", this.y.toString());
         }
     }
