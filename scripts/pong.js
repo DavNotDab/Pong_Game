@@ -1,8 +1,10 @@
 
+// Ball class. It represents the ball in the game.
 class Ball {
 
-    constructor() {
-        this.ball = document.getElementById("ball");
+    // The ball's constructor takes the id of the document element as a parameter.
+    constructor(id) {
+        this.ball = document.getElementById(id);
         this.x = parseInt(this.ball.getAttribute("cx"));
         this.y = parseInt(this.ball.getAttribute("cy"));
         this.r = parseInt(this.ball.getAttribute("r"));
@@ -12,6 +14,8 @@ class Ball {
         this.launch_ball();
     }
 
+    // Method that launches the ball in a random direction at the beginning of every round.
+    // It also checks the angle of the ball to make sure it doesn't go too far up or down.
     launch_ball() {
         this.speed = 5;
         this.angle = Math.floor(Math.random() * 361) * Math.PI / 180;
@@ -22,6 +26,9 @@ class Ball {
 
     }
 
+    // Method that moves the ball. The movement is calculated by using the speed and angle of the ball.
+    // It checks if the ball is going to hit the borders of the game area and changes the angle accordingly.
+    // It also checks if the ball is going to hit the paddles and changes the angle accordingly.
     move_ball() {
         if ((this.x < -2 || this.x > 1002) || check_collision(this, player1) || check_collision(this, player2)) {
             this.angle = Math.PI - this.angle;
@@ -36,10 +43,20 @@ class Ball {
         this.ball.setAttribute("cy", this.y.toString());
     }
 
+    // Method that resets the ball to the center of the game area.
+    // It's called when a player scores a point.
+    respawn_ball() {
+        this.x = 500;
+        this.y = 250;
+        this.launch_ball();
+    }
+
 }
 
+// Player class. It represents the paddles in the game.
 class Player {
 
+    // The player's constructor takes the id of the document element as a parameter.
     constructor(id) {
         this.player = document.getElementById(id);
         this.x = parseInt(this.player.getAttribute("x"));
@@ -52,6 +69,8 @@ class Player {
         this.moveDown = false;
     }
 
+    // Method that moves the player up.
+    // It checks if the player is moving up and if the player is not at the top of the game area.
     move_player_up() {
         if (this.moveUp && this.y > 0) {
             this.y -= this.speed;
@@ -61,6 +80,8 @@ class Player {
 
     }
 
+    // Method that moves the player down.
+    // It checks if the player is moving down and if the player is not at the bottom of the game area.
     move_player_down() {
         if (this.moveDown && this.y < 400) {
             this.y += this.speed;
@@ -69,11 +90,13 @@ class Player {
         }
     }
 
+    // Method that updates the score of the player.
     update_score() {
         this.score_text = document.getElementById(this.player.id + "_score");
         this.score_text.textContent = this.score.toString();
     }
 
+    // Method to be called when the player scores a point.
     goal() {
         this.score += 1;
         this.update_score();
@@ -81,12 +104,8 @@ class Player {
 
 }
 
-function respawn_ball() {
-    ball.x = 500;
-    ball.y = 250;
-    ball.launch_ball();
-}
-
+// Function that checks if the ball is colliding with the player.
+// If a collision happens it returns true, otherwise it returns false.
 function check_collision(ball, player) {
     if (Math.abs(ball.x - player.x2) < ball.r + 5) {
         if (Math.abs(ball.y - player.y2) < Math.abs(player.y2 - player.y)) {
@@ -97,6 +116,8 @@ function check_collision(ball, player) {
     return false;
 }
 
+// Function that handles the game loop. It's called every 10 milliseconds.
+// It checks player's movement and scores.
 function gameLoop() {
     setInterval(() => {
         player1.move_player_up();
@@ -105,16 +126,17 @@ function gameLoop() {
         player2.move_player_down();
         if (ball.x < 0) {
             player2.goal();
-            respawn_ball();
+            ball.respawn_ball();
         }
         else if (ball.x > 1000) {
             player1.goal();
-            respawn_ball();
+            ball.respawn_ball();
         }
     });
 
 }
 
+// Event listener for players movement when a key is pressed.
 window.addEventListener("keydown", (e) => {
     if (e.key === "w") player1.moveUp = true;
     if (e.key === "s") player1.moveDown = true;
@@ -122,6 +144,7 @@ window.addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown") player2.moveDown = true;
 });
 
+// Event listener for players movement when a key is released.
 window.addEventListener("keyup", (e) => {
     if (e.key === "w") player1.moveUp = false;
     if (e.key === "s") player1.moveDown = false;
@@ -129,11 +152,12 @@ window.addEventListener("keyup", (e) => {
     if (e.key === "ArrowDown") player2.moveDown = false;
 });
 
-
+// Main variables.
 let player1 = new Player("player1");
 let player2 = new Player("player2");
-let ball = new Ball();
+let ball = new Ball("ball");
 
+// Game starter.
 window.onload = () => {
     ball.launch_ball();
     gameLoop();
